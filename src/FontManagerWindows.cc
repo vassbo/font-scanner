@@ -282,7 +282,7 @@ long FontManagerImpl::findFont(FontDescriptor **foundFont, FontDescriptor *desc)
     delete fonts;
 
     FontDescriptor *fallback = new FontDescriptor(
-      NULL, NULL, NULL, NULL,
+      NULL, NULL, NULL, NULL, NULL,
       desc->weight, desc->width, desc->italic, false
     );
 
