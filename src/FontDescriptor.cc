@@ -45,6 +45,7 @@ bool getBool(Napi::Env env, Napi::Object obj, const char *name) {
 FontDescriptor::FontDescriptor(Napi::Env env, Napi::Object obj) {
   path = NULL;
   postscriptName = getString(env, obj, "postscriptName");
+  name = getString(env, obj, "name");
   family = getString(env, obj, "family");
   style = getString(env, obj, "style");
   weight = (FontWeight) getNumber(env, obj, "weight");
@@ -56,6 +57,7 @@ FontDescriptor::FontDescriptor(Napi::Env env, Napi::Object obj) {
 FontDescriptor::FontDescriptor() {
   path = NULL;
   postscriptName = NULL;
+  name = NULL;
   family = NULL;
   style = NULL;
   weight = FontWeightUndefined;
@@ -67,6 +69,7 @@ FontDescriptor::FontDescriptor() {
 FontDescriptor::FontDescriptor(
   const char *path,
   const char *postscriptName,
+  const char *name,
   const char *family,
   const char *style,
   FontWeight weight,
@@ -76,6 +79,7 @@ FontDescriptor::FontDescriptor(
 ) {
   this->path = copyString(path);
   this->postscriptName = copyString(postscriptName);
+  this->name = copyString(name);
   this->family = copyString(family);
   this->style = copyString(style);
   this->weight = weight;
@@ -87,6 +91,7 @@ FontDescriptor::FontDescriptor(
 FontDescriptor::FontDescriptor(FontDescriptor *desc) {
   path = copyString(desc->path);
   postscriptName = copyString(desc->postscriptName);
+  name = copyString(desc->name);
   family = copyString(desc->family);
   style = copyString(desc->style);
   weight = desc->weight;
@@ -102,6 +107,9 @@ FontDescriptor::~FontDescriptor() {
   if (postscriptName)
     delete postscriptName;
 
+  if (name)
+    delete name;
+
   if (family)
     delete family;
 
@@ -109,6 +117,7 @@ FontDescriptor::~FontDescriptor() {
     delete style;
 
   postscriptName = NULL;
+  name = NULL;
   family = NULL;
   style = NULL;
 }
@@ -122,6 +131,10 @@ Napi::Object FontDescriptor::toJSObject(Napi::Env env) {
 
   if (postscriptName) {
     res.Set(Napi::String::New(env, "postscriptName"), Napi::String::New(env, postscriptName));
+  }
+
+  if (name) {
+    res.Set(Napi::String::New(env, "name"), Napi::String::New(env, name));
   }
 
   if (family) {

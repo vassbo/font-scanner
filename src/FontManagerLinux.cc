@@ -109,11 +109,12 @@ FontWidth convertWidth(int width) {
 }
 
 FontDescriptor *createFontDescriptor(FcPattern *pattern) {
-  FcChar8 *path, *psName, *family, *style;
+  FcChar8 *path, *psName, *name, *family, *style;
   int weight, width, slant, spacing;
 
   FcPatternGetString(pattern, FC_FILE, 0, &path);
   FcPatternGetString(pattern, FC_POSTSCRIPT_NAME, 0, &psName);
+  FcPatternGetString(pattern, FC_FULLNAME, 0, &name);
   FcPatternGetString(pattern, FC_FAMILY, 0, &family);
   FcPatternGetString(pattern, FC_STYLE, 0, &style);
 
@@ -125,6 +126,7 @@ FontDescriptor *createFontDescriptor(FcPattern *pattern) {
   return new FontDescriptor(
     (char *) path,
     (char *) psName,
+    (char *) name,
     (char *) family,
     (char *) style,
     convertWeight(weight),
@@ -153,7 +155,7 @@ long FontManagerImpl::getAvailableFonts(ResultSet **fonts) {
   FcInit();
 
   FcPattern *pattern = FcPatternCreate();
-  FcObjectSet *os = FcObjectSetBuild(FC_FILE, FC_POSTSCRIPT_NAME, FC_FAMILY, FC_STYLE, FC_WEIGHT, FC_WIDTH, FC_SLANT, FC_SPACING, NULL);
+  FcObjectSet *os = FcObjectSetBuild(FC_FILE, FC_POSTSCRIPT_NAME, FC_FULLNAME, FC_FAMILY, FC_STYLE, FC_WEIGHT, FC_WIDTH, FC_SLANT, FC_SPACING, NULL);
   FcFontSet *fs = FcFontList(NULL, pattern, os);
   *fonts = getResultSet(fs);
 
@@ -170,6 +172,9 @@ FcPattern *createPattern(FontDescriptor *desc) {
 
   if (desc->postscriptName)
     FcPatternAddString(pattern, FC_POSTSCRIPT_NAME, (FcChar8 *) desc->postscriptName);
+
+  if (desc->name)
+    FcPatternAddString(pattern, FC_FULLNAME, (FcChar8 *) desc->name);
 
   if (desc->family)
     FcPatternAddString(pattern, FC_FAMILY, (FcChar8 *) desc->family);
@@ -194,7 +199,7 @@ FcPattern *createPattern(FontDescriptor *desc) {
 
 long FontManagerImpl::findFonts(ResultSet **fonts, FontDescriptor *desc) {
   FcPattern *pattern = createPattern(desc);
-  FcObjectSet *os = FcObjectSetBuild(FC_FILE, FC_POSTSCRIPT_NAME, FC_FAMILY, FC_STYLE, FC_WEIGHT, FC_WIDTH, FC_SLANT, FC_SPACING, NULL);
+  FcObjectSet *os = FcObjectSetBuild(FC_FILE, FC_POSTSCRIPT_NAME, FC_FULLNAME, FC_FAMILY, FC_STYLE, FC_WEIGHT, FC_WIDTH, FC_SLANT, FC_SPACING, NULL);
   FcFontSet *fs = FcFontList(NULL, pattern, os);
   *fonts = getResultSet(fs);
 

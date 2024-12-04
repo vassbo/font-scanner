@@ -121,10 +121,20 @@ long resultFromFont(FontDescriptor **res, IDWriteFont *font) {
       RETURN_ERROR_CODE(fileLoader->GetFilePathFromKey(referenceKey, referenceKeySize, name, nameLength + 1));
 
       char *psName = utf16ToUtf8(name);
-      char *postscriptName, *family, *style;
+      char *postscriptName, *fontName, *family, *style;
       RETURN_ERROR_CODE(getString(&postscriptName, font, DWRITE_INFORMATIONAL_STRING_POSTSCRIPT_NAME));
-      RETURN_ERROR_CODE(getString(&family, font, DWRITE_INFORMATIONAL_STRING_WIN32_FAMILY_NAMES));
-      RETURN_ERROR_CODE(getString(&style, font, DWRITE_INFORMATIONAL_STRING_WIN32_SUBFAMILY_NAMES));
+      RETURN_ERROR_CODE(getString(&fontName, font, DWRITE_INFORMATIONAL_STRING_FULL_NAME));
+
+      RETURN_ERROR_CODE(getString(&family, font, DWRITE_INFORMATIONAL_STRING_TYPOGRAPHIC_FAMILY_NAMES));
+      // check if empty (nullptr or empty string)
+      if (family == nullptr || family[0] == '\0') {
+          RETURN_ERROR_CODE(getString(&family, font, DWRITE_INFORMATIONAL_STRING_WIN32_FAMILY_NAMES));
+      }
+
+      RETURN_ERROR_CODE(getString(&style, font, DWRITE_INFORMATIONAL_STRING_TYPOGRAPHIC_SUBFAMILY_NAMES));
+      if (style == nullptr || style[0] == '\0') {
+          RETURN_ERROR_CODE(getString(&style, font, DWRITE_INFORMATIONAL_STRING_WIN32_SUBFAMILY_NAMES));
+      }
 
       bool monospace = false;
       // this method requires windows 7, so we need to cast to an IDWriteFontFace1
@@ -137,6 +147,7 @@ long resultFromFont(FontDescriptor **res, IDWriteFont *font) {
       *res = new FontDescriptor(
         psName,
         postscriptName,
+        fontName,
         family,
         style,
         (FontWeight) font->GetWeight(),
@@ -148,6 +159,7 @@ long resultFromFont(FontDescriptor **res, IDWriteFont *font) {
       delete psName;
       delete name;
       delete postscriptName;
+      delete fontName;
       delete family;
       delete style;
       fileLoader->Release();

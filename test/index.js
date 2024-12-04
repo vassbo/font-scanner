@@ -10,6 +10,7 @@ describe('font-manager', function() {
     assert.equal(typeof font, 'object');
     assert.equal(typeof font.path, 'string');
     assert.equal(typeof font.postscriptName, 'string');
+    assert.equal(typeof font.name, 'string');
     assert.equal(typeof font.family, 'string');
     assert.equal(typeof font.style, 'string');
     assert.equal(typeof font.weight, 'number');

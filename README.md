@@ -29,7 +29,7 @@ On Linux, you also may need to install the `libfontconfig-dev` package, for exam
 You load the `font-scanner` module using `require` as with all Node modules:
 
 ```javascript
-var fontManager = require('font-scanner');
+import fontManager from 'font-scanner';
 ```
 
 All of the methods exported by `font-scanner` have both synchronous and asynchronous versions available.
@@ -37,10 +37,19 @@ You should generally prefer the asynchronous version as it will allow your progr
 processing while a request for fonts is processing in the background, which may be expensive depending on
 the platform APIs that are available.
 
-* [`getAvailableFonts()`](#getavailablefonts)
-* [`findFonts(fontDescriptor)`](#findfontsfontdescriptor)
-* [`findFont(fontDescriptor)`](#findfontfontdescriptor)
-* [`substituteFont(postscriptName, text)`](#substitutefontpostscriptname-text)
+- [font-scanner](#font-scanner)
+  - [Features](#features)
+  - [Platforms](#platforms)
+  - [Installation](#installation)
+  - [API](#api)
+    - [getAvailableFonts()](#getavailablefonts)
+    - [findFonts(fontDescriptor)](#findfontsfontdescriptor)
+    - [findFont(fontDescriptor)](#findfontfontdescriptor)
+    - [substituteFont(postscriptName, text)](#substitutefontpostscriptname-text)
+    - [Font Descriptor](#font-descriptor)
+      - [Weights](#weights)
+      - [Widths](#widths)
+  - [License](#license)
 
 ### getAvailableFonts()
 
@@ -51,11 +60,12 @@ Returns an array of all [font descriptors](#font-descriptor) available on the sy
 fontManager.getAvailableFonts().then((fonts) => { ... });
 
 // synchronous API
-var fonts = fontManager.getAvailableFontsSync();
+const fonts = fontManager.getAvailableFontsSync();
 
 // output
-[ { path: '/Library/Fonts/Arial.ttf',
-    postscriptName: 'ArialMT',
+[ { path: '/Fonts/ArialNI.ttf',
+    postscriptName: 'ArialNarrow-Italic',
+    name: 'Arial Narrow Cursive',
     family: 'Arial',
     style: 'Regular',
     weight: 400,
@@ -79,20 +89,22 @@ fontManager.findFonts({ family: 'Arial' }).then((fonts) => { ... });
 var fonts = fontManager.findFontsSync({ family: 'Arial' });
 
 // output
-[ { path: '/Library/Fonts/Arial.ttf',
+[ { path: '/Fonts/Arial.ttf',
     postscriptName: 'ArialMT',
+    name: 'Arial',
     family: 'Arial',
-    style: 'Regular',
+    style: 'Normal',
     weight: 400,
     width: 5,
     italic: false,
     monospace: false },
-  { path: '/Library/Fonts/Arial Bold.ttf',
-    postscriptName: 'Arial-BoldMT',
+  { path: '/Library/Fonts/ArialNI.ttf',
+    postscriptName: 'ArialNarrow',
+    name: 'Arial Narrow',
     family: 'Arial',
-    style: 'Bold',
-    weight: 700,
-    width: 5,
+    style: 'Narrow',
+    weight: 400,
+    width: 3,
     italic: false,
     monospace: false } ]
 ```
@@ -115,6 +127,7 @@ var font = fontManager.findFontSync({ family: 'Arial', weight: 700 });
 // output
 { path: '/Library/Fonts/Arial Bold.ttf',
   postscriptName: 'Arial-BoldMT',
+  name: 'Arial Bold',
   family: 'Arial',
   style: 'Bold',
   weight: 700,
@@ -143,6 +156,7 @@ var font = fontManager.substituteFontSync('TimesNewRomanPSMT', '汉字');
 // output
 { path: '/Library/Fonts/Songti.ttc',
   postscriptName: 'STSongti-SC-Regular',
+  name: 'Songti SC Regular',
   family: 'Songti SC',
   style: 'Regular',
   weight: 400,
@@ -162,6 +176,7 @@ Name             | Type    | Description
 ---------------- | ------- | -----------
 `path`           | string  | The path to the font file in the filesystem. **(not applicable for queries, only for results)**
 `postscriptName` | string  | The PostScript name of the font (e.g `'Arial-BoldMT'`). This uniquely identities a font in most cases.
+`name`           | string  | The font name (e.g `'Arial Cursive'`)
 `family`         | string  | The font family name (e.g `'Arial'`)
 `style`          | string  | The font style name (e.g. `'Bold'`)
 `weight`         | number  | The font weight (e.g. `400` for normal weight). Should be a multiple of 100, between 100 and 900. See [below](#weights) for weight documentation.

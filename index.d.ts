@@ -8,6 +8,7 @@ declare module "font-scanner" {
         readonly italic: boolean
         readonly monospace: boolean
         readonly postscriptName: string
+        readonly name: string
     }
     export interface QueryFontDescriptor {
         readonly path?: string
@@ -18,6 +19,7 @@ declare module "font-scanner" {
         readonly italic?: boolean
         readonly monospace?: boolean
         readonly postscriptName?: string
+        readonly name?: string
     }
     /**
      * Fetches fonts in the system

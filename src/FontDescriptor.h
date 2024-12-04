@@ -34,6 +34,7 @@ struct FontDescriptor {
 public:
   const char *path;
   const char *postscriptName;
+  const char *name;
   const char *family;
   const char *style;
   FontWeight weight;
@@ -52,6 +53,7 @@ public:
   FontDescriptor(
     const char *path,
     const char *postscriptName,
+    const char *name,
     const char *family,
     const char *style,
     FontWeight weight,

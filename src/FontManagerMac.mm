@@ -36,15 +36,16 @@ static int convertWidth(float unit) {
   }
 }
 
-FontDescriptor *getMaybeFontDescriptor(const char *path, const char *postscriptName, const char *family, const char *style,
+FontDescriptor *getMaybeFontDescriptor(const char *path, const char *postscriptName, const char *name, const char *family, const char *style,
   FontWeight weight, FontWidth width, bool italic, bool monospace) {
-  if (path == NULL || postscriptName == NULL || family == NULL || style == NULL) {
+  if (path == NULL || postscriptName == NULL || name == NULL || family == NULL || style == NULL) {
     return NULL;
   }
 
   return new FontDescriptor(
     path,
     postscriptName,
+    name,
     family,
     style,
     weight,
@@ -57,6 +58,7 @@ FontDescriptor *getMaybeFontDescriptor(const char *path, const char *postscriptN
 long createFontDescriptor(FontDescriptor **res, CTFontDescriptorRef descriptor) {
   NSURL *url = (NSURL *) CTFontDescriptorCopyAttribute(descriptor, kCTFontURLAttribute);
   NSString *psName = (NSString *) CTFontDescriptorCopyAttribute(descriptor, kCTFontNameAttribute);
+  NSString *name = (NSString *) CTFontDescriptorCopyAttribute(descriptor, kCTFontDisplayNameAttribute);
   NSString *family = (NSString *) CTFontDescriptorCopyAttribute(descriptor, kCTFontFamilyNameAttribute);
   NSString *style = (NSString *) CTFontDescriptorCopyAttribute(descriptor, kCTFontStyleNameAttribute);
 
@@ -132,6 +134,11 @@ CTFontDescriptorRef getFontDescriptor(FontDescriptor *desc) {
   if (desc->postscriptName) {
     NSString *postscriptName = [NSString stringWithUTF8String:desc->postscriptName];
     attrs[(id)kCTFontNameAttribute] = postscriptName;
+  }
+
+  if (desc->name) {
+    NSString *name = [NSString stringWithUTF8String:desc->name];
+    attrs[(id)kCTFontDisplayNameAttribute] = name;
   }
 
   if (desc->family) {
