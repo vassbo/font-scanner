@@ -3,6 +3,7 @@
   "version": "0.2.1",
   "description": "Provides access to the system font catalog",
   "main": "index.js",
+  "types": "index.d.ts",
   "dependencies": {
     "node-addon-api": "^5.0.0"
   },
