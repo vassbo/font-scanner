@@ -75,6 +75,7 @@ long createFontDescriptor(FontDescriptor **res, CTFontDescriptorRef descriptor) 
   *res = getMaybeFontDescriptor(
     [[url path] UTF8String],
     [psName UTF8String],
+    [name UTF8String],
     [family UTF8String],
     [style UTF8String],
     weight,
