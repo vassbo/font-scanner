@@ -36,7 +36,7 @@ declare module "font-scanner" {
      * @example
      * getAvailableFonts((fonts) => { ... });
      */
-    export function getAvailableFonts(callback: (fonts: FontDescriptor[]) => void): void
+    export function getAvailableFonts(): Promise<FontDescriptor[]>
     /**
      * Queries all the fonts in the system matching the given parameters
      *
@@ -56,7 +56,7 @@ declare module "font-scanner" {
      * findFonts({ family: 'Arial' }, (fonts) => { ... });
      * findFonts((fonts) => { ... });
      */
-    export function findFonts(fontDescriptor: QueryFontDescriptor | undefined, callback: (fonts: FontDescriptor[]) => void)
+    export function findFonts(fontDescriptor: QueryFontDescriptor | undefined): Promise<FontDescriptor[]>
     /**
      * Find only one font matching the given query. This function always returns
      * a result (never null), so sometimes the output will not exactly match the
@@ -80,7 +80,7 @@ declare module "font-scanner" {
      * findFont((font) => { ... });
      * @returns Only one font description matching those query parameters
      */
-    export function findFont(fontDescriptor: QueryFontDescriptor | undefined, callback: (font: FontDescriptor) => void)
+    export function findFont(fontDescriptor: QueryFontDescriptor | undefined): Promise<FontDescriptor>
     /**
      * Substitutes the font with the given post script name with another font
      * that contains the characters in text. If a font matching post script
@@ -107,5 +107,5 @@ declare module "font-scanner" {
      * @param postscriptName Name of the font to be replaced
      * @param text Characters for matching
      */
-    export function substituteFont(postscriptName: string, text: string, callback: (font: FontDescriptor) => void)
+    export function substituteFont(postscriptName: string, text: string): Promise<FontDescriptor>
 }

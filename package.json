@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/axosoft/font-scanner.git"
+    "url": "https://github.com/vassbo/font-scanner.git"
   },
   "keywords": [
     "font",
@@ -33,11 +33,12 @@
     "Devon Govett <devongovett@gmail.com>",
     "Tyler Ang-Wanek <tylera@axosoft.com>",
     "Jordan Wallet <jordanw@axosoft.com>",
-    "Jake Krammer <jakek@axosoft.com>"
+    "Jake Krammer <jakek@axosoft.com>",
+    "Kristoffer Vassbø <kristoffer@vassbo.net>"
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/axosoft/font-scanner/issues"
+    "url": "https://github.com/vassbo/font-scanner/issues"
   },
-  "homepage": "https://github.com/axosoft/font-scanner"
+  "homepage": "https://github.com/vassbo/font-scanner"
 }

@@ -5,7 +5,7 @@ var assert = require('assert');
 var standardFont = process.platform === 'linux' ? 'Liberation Sans' : 'Arial';
 var postscriptName = process.platform === 'linux' ? 'LiberationSans' : 'ArialMT';
 
-describe('font-manager', function() {
+describe('font-scanner', function() {
   function assertFontDescriptor(font) {
     assert.equal(typeof font, 'object');
     assert.equal(typeof font.path, 'string');

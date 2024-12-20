@@ -5,7 +5,7 @@ try {
   try {
     fontManager = require('./build/Debug/fontmanager');
   } catch (debugNotFoundError) {
-    throw new Error('There is no built binary for font-manager');
+    throw new Error('There is no built binary for font-scanner');
   }
 }
 
