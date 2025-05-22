@@ -23,10 +23,19 @@ Napi::Array collectResults(Napi::Env env, ResultSet *results) {
 // converts a FontDescriptor to a JavaScript object
 Napi::Value wrapResult(Napi::Env env, FontDescriptor *result) {
   Napi::EscapableHandleScope scope(env);
-  if (result == NULL)
+  if (result == NULL) {
     return scope.Escape(env.Null());
+  }
 
-  Napi::Object res = result->toJSObject(env);
+  Napi::Object res;
+  try {
+    res = result->toJSObject(env);
+  } catch (...) {
+    delete result;
+    Napi::Error::New(env, "Failed to convert FontDescriptor to JS object").ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
   delete result;
   return scope.Escape(res);
 }

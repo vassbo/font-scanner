@@ -109,14 +109,23 @@ FontWidth convertWidth(int width) {
 }
 
 FontDescriptor *createFontDescriptor(FcPattern *pattern) {
-  FcChar8 *path, *psName, *name, *family, *style;
-  int weight, width, slant, spacing;
+  FcChar8 *path = NULL, *psName = NULL, *name = NULL, *family = NULL, *style = NULL;
+  int weight = FC_WEIGHT_REGULAR;
+  int width = FC_WIDTH_NORMAL;
+  int slant = FC_SLANT_ROMAN;
+  int spacing = FC_PROPORTIONAL;
 
   FcPatternGetString(pattern, FC_FILE, 0, &path);
   FcPatternGetString(pattern, FC_POSTSCRIPT_NAME, 0, &psName);
-  FcPatternGetString(pattern, FC_FULLNAME, 0, &name);
-  FcPatternGetString(pattern, FC_FAMILY, 0, &family);
-  FcPatternGetString(pattern, FC_STYLE, 0, &style);
+
+  if (FcPatternGetString(pattern, FC_FULLNAME, 0, &name) != FcResultMatch)
+    name = NULL;
+
+  if (FcPatternGetString(pattern, FC_FAMILY, 0, &family) != FcResultMatch)
+    family = NULL;
+
+  if (FcPatternGetString(pattern, FC_STYLE, 0, &style) != FcResultMatch)
+    style = NULL;
 
   FcPatternGetInteger(pattern, FC_WEIGHT, 0, &weight);
   FcPatternGetInteger(pattern, FC_WIDTH, 0, &width);

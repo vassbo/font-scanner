@@ -4,7 +4,8 @@ char *copyString(const char *input) {
   if (!input)
     return NULL;
 
-  char *str = new char[strlen(input) + 1];
+  size_t len = strlen(input);
+  char *str = new char[len + 1];
   strcpy(str, input);
   return str;
 }
@@ -17,7 +18,8 @@ char *getString(Napi::Env env, Napi::Object obj, const char *name) {
     return NULL;
   }
 
-  return copyString(value.As<Napi::String>().Utf8Value().c_str());
+  std::string strVal = value.As<Napi::String>().Utf8Value();
+  return copyString(strVal.c_str());
 }
 
 int getNumber(Napi::Env env, Napi::Object obj, const char *name) {
